@@ -1,0 +1,20 @@
+.navbar-brand {
+    font-size: 36px;
+    background: lightblue;
+    border-radius: 5px;
+}
+
+.search-header {
+    font-size: 24px;
+    font-weight: bold;
+    background: lightblue;
+    border-radius: 5px;
+}
+
+.city-name {
+    font-size: 30px;
+}
+
+.forecast-date {
+    font-size: 18px;
+}

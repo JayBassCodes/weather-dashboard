@@ -1,6 +1,8 @@
 # weather-dashboard
 repo for 17jul homework, a dashboard for weather display
 
+Check out the app here: https://jaybasscodes.github.io/weather-dashboard/
+
 What's the weather? We ask ourselves that every time we get ready to head out of our homes and it has never been easier to find out. Using my Weather Dashboard, deployed here ,by searching the city, state, country or region you are looking for in the search column, you will see the weather results on the right.
 
 search bar

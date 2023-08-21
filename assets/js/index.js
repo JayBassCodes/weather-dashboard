@@ -1,18 +1,21 @@
 function startup() {
-    let inputEl = document.getElementById("city-input");
-    let searchEl = document.getElementById("search-button");
-    let clearEl = document.getElementById("clear-history");
+
+    //variable block
+    let input = document.getElementById("city-input");
+    let searchButton = document.getElementById("search-button");
+    let clearHistory = document.getElementById("clear-history");
     let nameEl = document.getElementById("city-name");
-    let currentPicEl = document.getElementById("current-pic");
-    let currentTempEl = document.getElementById("temperature");
-    let currentHumidityEl = document.getElementById("humidity"); 4
-    let currentWindEl = document.getElementById("wind-speed");
-    let currentUVEl = document.getElementById("UV-index");
+    let currentPic = document.getElementById("current-pic");
+    let temperature = document.getElementById("temperature");
+    let humidity = document.getElementById("humidity"); 4
+    let windSpeed = document.getElementById("wind-speed");
+    let currentUV = document.getElementById("UV-index");
     let historyEl = document.getElementById("history");
     let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
-    console.log(searchHistory);
 
-    const apiKey = '234f56f56280fd0175d6b3731e4e6ba3'
+    input
+    // api key
+    const apiKey = '234f56f56280fd0175d6b3731e4e6ba3';
 
     function weatherCall(cityName) {
         let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
@@ -25,11 +28,11 @@ function startup() {
                 let year = currentDate.getFullYear();
                 nameEl.innerHTML = response.data.name + " (" + month + "/" + day + "/" + year + ") ";
                 let weatherPic = response.data.weather[0].icon;
-                currentPicEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
-                currentPicEl.setAttribute("alt", response.data.weather[0].description);
-                currentTempEl.innerHTML = "Temperature: " + k2f(response.data.main.temp) + " &#176F";
-                currentHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
-                currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
+                currentPic.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherPic + "@2x.png");
+                currentPic.setAttribute("alt", response.data.weather[0].description);
+                temperature.innerHTML = "Temperature: " + k2f(response.data.main.temp) + " &#176F";
+                humidity.innerHTML = "Humidity: " + response.data.main.humidity + "%";
+                windSpeed.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
                 let lat = response.data.coord.lat;
                 let lon = response.data.coord.lon;
                 let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&cnt=1";
@@ -38,8 +41,8 @@ function startup() {
                         let UVIndex = document.createElement("span");
                         UVIndex.setAttribute("class", "badge badge-danger");
                         UVIndex.innerHTML = response.data[0].value;
-                        currentUVEl.innerHTML = "UV Index: ";
-                        currentUVEl.append(UVIndex);
+                        currentUV.innerHTML = "UV Index: ";
+                        currentUV.append(UVIndex);
                     });
 
                 let cityID = response.data.id;
@@ -72,3 +75,43 @@ function startup() {
                     })
             });
     }
+    searchButton.addEventListener("click",function() {
+        const searchTerm = input.value;
+        weatherCall(searchTerm);
+        searchHistory.push(searchTerm);
+        localStorage.setItem("search",JSON.stringify(searchHistory));
+        renderSearchHistory();
+    })
+
+    clearHistory.addEventListener("click",function() {
+        searchHistory = [];
+        renderSearchHistory();
+    })
+
+    function k2f(K) {
+        return Math.floor((K - 273.15) *1.8 +32);
+    }
+
+    function renderSearchHistory() {
+        historyEl.innerHTML = "";
+        for (let i=0; i<searchHistory.length; i++) {
+            const historyItem = document.createElement("input");
+            historyItem.setAttribute("type","text");
+            historyItem.setAttribute("readonly",true);
+            historyItem.setAttribute("class", "form-control d-block bg-white");
+            historyItem.setAttribute("value", searchHistory[i]);
+            historyItem.addEventListener("click",function() {
+                weatherCall(historyItem.value);
+            })
+            historyEl.append(historyItem);
+        }
+    }
+
+    renderSearchHistory();
+    if (searchHistory.length > 0) {
+        weatherCall(searchHistory[searchHistory.length - 1]);
+    }
+
+
+}
+initPage();

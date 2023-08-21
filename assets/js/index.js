@@ -13,14 +13,18 @@ function startup() {
     let historyEl = document.getElementById("history");
     let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
-    input
+    
+
     // api key
     const apiKey = '234f56f56280fd0175d6b3731e4e6ba3';
 
+    // function to call api for data
     function weatherCall(cityName) {
+        // request
         let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
         axios.get(queryURL)
             .then(function (response) {
+                // response
                 let currentDate = new Date(response.data.dt * 1000);
                 console.log(currentDate);
                 let day = currentDate.getDate();
@@ -74,7 +78,9 @@ function startup() {
                         }
                     })
             });
+            // end of response
     }
+    // search button to utilize api call function
     searchButton.addEventListener("click",function() {
         const searchTerm = input.value;
         weatherCall(searchTerm);
@@ -83,15 +89,17 @@ function startup() {
         renderSearchHistory();
     })
 
+    // clear history button
     clearHistory.addEventListener("click",function() {
         searchHistory = [];
         renderSearchHistory();
     })
-
+    // kelvin to fahrenheit
     function k2f(K) {
         return Math.floor((K - 273.15) *1.8 +32);
     }
 
+    // function for search history display and function
     function renderSearchHistory() {
         historyEl.innerHTML = "";
         for (let i=0; i<searchHistory.length; i++) {
@@ -107,6 +115,7 @@ function startup() {
         }
     }
 
+    // search history being called
     renderSearchHistory();
     if (searchHistory.length > 0) {
         weatherCall(searchHistory[searchHistory.length - 1]);
@@ -114,4 +123,5 @@ function startup() {
 
 
 }
-initPage();
+// page startup
+startup();

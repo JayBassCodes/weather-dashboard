@@ -13,12 +13,14 @@
 
 <body>
     <header>
+        <!-- navbar -->
         <nav class="navbar navbar-dark bg-dark">
             <span class="navbar-brand mb-0 h1 w-100 text-center">Weather Dashboard</span>
     </header>
     <main class="container">
         <section class="row">
             <div class="col-4 bg-dark">
+                <!-- search bar -->
                 <p class="search-header my-1">Search for a city</p>
                 <div class="input-group mb-3">
                     <input id="city-input" type="text" class="form-control" placeholder="Enter city name"
@@ -29,9 +31,11 @@
                         </button>
                     </div>
                 </div>
+                <!-- history -->
                 <button class="btn btn-primary mb-3" type="button" id="clear-history">Clear history</button>
                 <form id="history"></form>
             </div>
+            <!-- results -->
             <div class="col-8">
                 <div class="row mr-0">
                     <div class="col-12 border border-dark m-3 rounded">
@@ -85,6 +89,8 @@
 <footer>
     <h5 class="align-bottom text-light bg-dark text-center">Thank You for using my app!</h5>
 </footer>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script src="./assets/js/index.js"></script>
 
